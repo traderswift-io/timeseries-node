@@ -14,7 +14,7 @@ Run `python3 -B node.py serve --config node.json`. Supply a JSON object with:
 | `listen_port` | HTTP port, integer from 1 to 65535 |
 | `backfill_days` | Initial history window, 1 to 200 days, default 30 |
 
-There are no built-in venue or listen addresses. Supply public Hyperliquid base URLs for venue use, or local fake-venue URLs for checks. Free-only configuration requires no credentials. Optional [paid bars](../x402.md) add a signed operator manifest and an external facilitator credential file. Historical availability depends on what the venue retains; a requested window does not guarantee complete history.
+There are no built-in venue or listen addresses. Supply public Hyperliquid base URLs for venue use, or local fake-venue URLs for checks. Free-only configuration requires no credentials. Optional [paid bars](../x402.md) add a signed operator manifest and an external facilitator authentication file (a CDP signing key or legacy Authorization value). Historical availability depends on what the venue retains; a requested window does not guarantee complete history.
 
 `GET /public/v1/instruments`, `/public/v1/bars` and `/public/v1/segments?day=YYYY-MM-DD` use the existing [v1 interface](DATA_INTERFACE.md). Coverage is Hyperliquid hourly candles for BNB, BTC, DOGE, ETH, HYPE, SOL and XRP. The instruments response advertises that fixed coverage, including symbols for which the venue returned no history. All prices and volumes are decimal strings. The local SQLite database belongs to the existing `files` provenance category. `live_extended` is false because every returned candle has already been stored; there is no separate on-read live overlay. Status remains `live` until the hour ends, then `closed`. No candle is labelled validated.
 

@@ -8,6 +8,7 @@ import time
 from aiohttp import ClientSession, ClientTimeout, DummyCookieJar, web
 
 import public_feed
+import x402_cdp
 import x402_manifest
 import x402_usage
 
@@ -68,12 +69,17 @@ def validate_payment(state: dict, header: str):
 
 
 async def facilitator_call(config: dict, operation: str, payment: dict, offer: dict) -> dict:
-    authorization = x402_manifest.bounded_file(config['credential_file'], 16384).decode().strip()
+    url = config['facilitator_url'] + '/' + operation
+    authorization = None
     try:
+        if 'facilitator_key_id' in config:
+            authorization = x402_cdp.authorization(config, url)
+        else:
+            authorization = x402_manifest.bounded_file(config['credential_file'], 16384).decode().strip()
         x402_manifest.require(authorization and '\n' not in authorization and '\r' not in authorization)
         body = {'x402Version': 2, 'paymentPayload': payment, 'paymentRequirements': offer}
         async with ClientSession(timeout=ClientTimeout(total=10), trust_env=False, cookie_jar=DummyCookieJar()) as session:
-            async with session.post(config['facilitator_url'] + '/' + operation, json=body,
+            async with session.post(url, json=body,
                                     headers={'Authorization': authorization}, allow_redirects=False) as response:
                 x402_manifest.require(response.status == 200)
                 raw = bytearray()

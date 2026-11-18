@@ -11,7 +11,14 @@ def load_paid(config: dict, config_path: Path) -> dict | None:
         return None
     try:
         paid = dict(config['paid'])
-        for name in ('price_usdc', 'payTo', 'facilitator_url', 'credential_file', 'origin', 'scope',
+        cdp = 'facilitator_key_id' in paid or 'facilitator_key_file' in paid
+        if cdp:
+            x402_manifest.require('credential_file' not in paid)
+            x402_manifest.bounded_text(paid['facilitator_key_id'], 2048)
+            authentication_file = 'facilitator_key_file'
+        else:
+            authentication_file = 'credential_file'
+        for name in ('price_usdc', 'payTo', 'facilitator_url', authentication_file, 'origin', 'scope',
                      'meter_file', 'ledger_file', 'manifest_file', 'envelope_file', 'serve_provider_id'):
             x402_manifest.bounded_text(paid[name], 2048)
         x402_manifest.require(re.fullmatch(r'(0|[1-9][0-9]{0,13})(\.[0-9]{1,6})?', paid['price_usdc']))
@@ -31,12 +38,13 @@ def load_paid(config: dict, config_path: Path) -> dict | None:
         x402_manifest.require(parsed.scheme == 'https' or (parsed.scheme == 'http' and parsed.hostname == '127.0.0.1'
                                                          and 47000 <= parsed.port <= 47999))
         x402_manifest.require(parsed.hostname and not parsed.username and not parsed.password and not parsed.query and not parsed.fragment)
-        for name in ('credential_file', 'meter_file', 'ledger_file', 'manifest_file', 'envelope_file'):
+        file_names = (authentication_file, 'meter_file', 'ledger_file', 'manifest_file', 'envelope_file')
+        for name in file_names:
             candidate = Path(paid[name])
             paid[name] = (config_path.resolve().parent / candidate).resolve()
         root = Path(__file__).resolve().parent
-        x402_manifest.require(not paid['credential_file'].is_relative_to(root))
-        paths = [paid[name] for name in ('credential_file', 'meter_file', 'ledger_file', 'manifest_file', 'envelope_file')]
+        x402_manifest.require(not paid[authentication_file].is_relative_to(root))
+        paths = [paid[name] for name in file_names]
         paths += [config_path.resolve(), Path(config['database']).resolve()]
         x402_manifest.require(len(paths) == len(set(paths)))
         paid.update(x402_manifest.load_manifest(paid))
