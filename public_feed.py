@@ -72,4 +72,5 @@ def create_app(connection, node_id: str) -> web.Application:
     app.router.add_get('/public/v1/instruments', handle_public_instruments)
     app.router.add_get('/public/v1/bars', handle_public_bars)
     app.router.add_get('/public/v1/segments', handle_public_segments)
+    app.router.add_get('/segments', handle_public_segments)
     return app

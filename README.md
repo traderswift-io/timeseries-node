@@ -27,6 +27,7 @@ TraderSwift runs one node in dev mode, and its own chart is served free inside S
 |---|---|
 | [docs/DATA_INTERFACE.md](docs/DATA_INTERFACE.md) | The data interface: instruments, bars, live bars, segment hashes, the embed frame. Versions v0 and v1. |
 | [docs/NODE.md](docs/NODE.md) | Standalone Python store and serve node: local SQLite, Hyperliquid backfill and websocket ingestion, public v1 HTTP interface. |
+| [docs/ANCHOR.md](docs/ANCHOR.md) | Event-driven daily anchoring through the chain client and two-of-three verification. |
 | `web/` | The first chart tool: TraderSwift's chart front end, plain files, no build step. Lightweight Charts with drawing tools, live bars, and a phone-first layout. |
 | `NOTICE`, `LICENSE` | Apache License 2.0, plus the attribution notices for Lightweight Charts and the drawing plugin. |
 
@@ -34,7 +35,7 @@ The chart calls `/api/instruments`, `/api/bars`, `/api/live` and `/api/quotes` o
 
 ## Status
 
-Time series is in dev mode. TraderSwift's node is live for its own use. A public test feed (Hyperliquid) and the daily segment hashes are in [docs/DATA_INTERFACE.md](docs/DATA_INTERFACE.md). Still to come: separate store and serve node software, two-of-three checks on the chain, the usage meter and fee split, and a list of front ends with votes. Expect changes. The interface keeps every published version working.
+Time series is in dev mode. TraderSwift's node is live for its own use. A public test feed (Hyperliquid) and the daily segment hashes are in [docs/DATA_INTERFACE.md](docs/DATA_INTERFACE.md). Daily anchor submission and two-of-three verification are available through the [anchor and verify commands](docs/ANCHOR.md); actual chain-client integration still needs verification. Still to come: separate store and serve node software, the usage meter and fee split, and a list of front ends with votes. Expect changes. The interface keeps every published version working.
 
 ## Licences of what is bundled
 

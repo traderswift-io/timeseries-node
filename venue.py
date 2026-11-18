@@ -68,7 +68,7 @@ async def backfill(session, config: dict, connection) -> None:
             start = end + 1
 
 
-async def consume_stream(websocket, connection) -> None:
+async def consume_stream(websocket, connection, on_bar_event=None) -> None:
     async for message in websocket:
         if message.type == WSMsgType.ERROR:
             raise ConnectionError('venue websocket failed') from websocket.exception()
@@ -89,14 +89,16 @@ async def consume_stream(websocket, connection) -> None:
             if ('hyperliquid', symbol, candle.get('i')) not in segments.COVERAGE:
                 raise ValueError('unexpected websocket candle series')
             store.write_bars(connection, symbol, [candle_bar(candle, symbol)])
+        if candles and on_bar_event is not None:
+            await on_bar_event(int(time.time()))
     if websocket.exception():
         raise ConnectionError('venue websocket failed') from websocket.exception()
 
 
-async def extend(session, config: dict, connection, websocket) -> None:
+async def extend(session, config: dict, connection, websocket, on_bar_event=None) -> None:
     try:
         while True:
-            await consume_stream(websocket, connection)
+            await consume_stream(websocket, connection, on_bar_event)
             await websocket.close()
             websocket = await open_stream(session, config)
             await backfill(session, config, connection)
