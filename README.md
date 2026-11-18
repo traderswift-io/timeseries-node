@@ -26,6 +26,7 @@ TraderSwift runs one node in dev mode, and its own chart is served free inside S
 | Path | What it is |
 |---|---|
 | [docs/DATA_INTERFACE.md](docs/DATA_INTERFACE.md) | The data interface: instruments, bars, live bars, segment hashes, the embed frame. Versions v0 and v1. |
+| [docs/NODE.md](docs/NODE.md) | Standalone Python store and serve node: local SQLite, Hyperliquid backfill and websocket ingestion, public v1 HTTP interface. |
 | `web/` | The first chart tool: TraderSwift's chart front end, plain files, no build step. Lightweight Charts with drawing tools, live bars, and a phone-first layout. |
 | `NOTICE`, `LICENSE` | Apache License 2.0, plus the attribution notices for Lightweight Charts and the drawing plugin. |
 
