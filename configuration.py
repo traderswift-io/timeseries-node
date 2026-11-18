@@ -41,6 +41,8 @@ def load_config(path: Path, command: str = 'serve') -> dict:
     if command == 'anchor':
         require_strings(config, ('chain_binary', 'chain_keyring_dir', 'chain_key_name', 'chain_id', 'store_provider_id'))
         require_url(config, 'chain_rpc_url', ('http', 'https', 'tcp'))
+        if config.setdefault('chain_keyring_backend', 'test') not in ('test', 'file', 'os'):
+            raise ValueError('chain_keyring_backend must be test, file or os')
         if not re.fullmatch(r'[A-Za-z0-9._-]{1,64}', config['store_provider_id']):
             raise ValueError('store_provider_id must be a compact provider identifier')
         for name in ('chain_binary', 'chain_keyring_dir'):

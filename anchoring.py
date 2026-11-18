@@ -22,7 +22,8 @@ def transaction_arguments(config: dict, day: str, candle_root: str) -> list[str]
             '--subnet', 'timeseries', '--segment-kind', 'candle_root',
             '--segment-id', day, '--segment-hash', candle_root,
             '--provider-id', config['store_provider_id'], '--from', config['chain_key_name'],
-            '--keyring-dir', config['chain_keyring_dir'], '--chain-id', config['chain_id'],
+            '--keyring-dir', config['chain_keyring_dir'], '--keyring-backend', config['chain_keyring_backend'],
+            '--chain-id', config['chain_id'],
             '--node', config['chain_rpc_url'], '--output', 'json', '--yes', '--broadcast-mode', 'sync']
 
 
