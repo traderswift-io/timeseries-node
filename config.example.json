@@ -1,0 +1,39 @@
+{
+  "node_id": "example-node",
+  "database": "node.sqlite3",
+  "http_base_url": "https://venue.example.invalid",
+  "websocket_base_url": "wss://venue.example.invalid",
+  "listen_host": "127.0.0.1",
+  "listen_port": 47100,
+  "backfill_days": 30,
+  "store_provider_id": "example-store",
+  "chain_binary": "/path/to/traderswiftd",
+  "chain_keyring_dir": "/path/to/operator-keyring",
+  "chain_keyring_backend": "file",
+  "chain_key_name": "example-store-signer",
+  "chain_id": "traderswift-1",
+  "chain_rpc_url": "https://rpc.example.invalid",
+  "chain_rest_base_url": "https://rest.example.invalid",
+  "paid": {
+    "price_usdc": "0.01",
+    "daily_cap": 100,
+    "payTo": "REPLACE_WITH_OPERATOR_BASE_ADDRESS",
+    "facilitator_url": "https://facilitator.example.invalid/x402",
+    "facilitator_key_id": "REPLACE_WITH_CDP_KEY_ID",
+    "facilitator_key_file": "/path/to/external-cdp-key",
+    "max_timeout_seconds": 120,
+    "origin": "https://node.example.invalid",
+    "scope": "timeseries.bars",
+    "serve_provider_id": "example-serve",
+    "meter_file": "/path/to/operator-data/meter.jsonl",
+    "ledger_file": "/path/to/operator-data/payments.jsonl",
+    "manifest_file": "/path/to/public-manifest.json",
+    "envelope_file": "/path/to/public-manifest-envelope.json",
+    "manifest_pin": {
+      "kid": "REPLACE_WITH_MANIFEST_KEY_ID",
+      "type": "tendermint/PubKeySecp256k1",
+      "address": "REPLACE_WITH_MANIFEST_SIGNER_ADDRESS",
+      "publicKey": "REPLACE_WITH_BASE64_COMPRESSED_PUBLIC_KEY"
+    }
+  }
+}

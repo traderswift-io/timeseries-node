@@ -1,0 +1,14 @@
+[Unit]
+Description=Time series store and serve node
+
+[Service]
+Type=simple
+WorkingDirectory=/path/to/checkout/runtime
+ExecStart=/usr/bin/python3 -B /path/to/checkout/runtime/node.py serve --config /path/to/checkout/runtime/node.json
+Restart=on-failure
+KillSignal=SIGINT
+TimeoutStopSec=75
+UMask=0077
+
+[Install]
+WantedBy=default.target

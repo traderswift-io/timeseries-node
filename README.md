@@ -23,6 +23,11 @@ TraderSwift runs one node in dev mode, and its own chart is served free inside S
 
 ## What is here
 
+Start with the [operator kit](docs/OPERATOR.md) to install and run a node,
+register providers, enable anchoring and paid bars, and connect a front end.
+The combined template is [config.example.json](config.example.json); the user
+service unit is [deploy/timeseries-node.service](deploy/timeseries-node.service).
+
 | Path | What it is |
 |---|---|
 | [docs/DATA_INTERFACE.md](docs/DATA_INTERFACE.md) | The data interface: instruments, bars, live bars, segment hashes, the embed frame. Versions v0 and v1. |
@@ -32,7 +37,7 @@ TraderSwift runs one node in dev mode, and its own chart is served free inside S
 | `web/` | The first chart tool: TraderSwift's chart front end, plain files, no build step. Lightweight Charts with drawing tools, live bars, and a phone-first layout. |
 | `NOTICE`, `LICENSE` | Apache License 2.0, plus the attribution notices for Lightweight Charts and the drawing plugin. |
 
-The chart calls `/api/instruments`, `/api/bars`, `/api/live` and `/api/quotes` on its own origin, plus `/api/tv_drawings` to keep a user's drawings. Serve `web/` at `/static/` and `web/tv.html` at `/`, next to a node.
+The chart calls `/api/instruments`, `/api/bars`, `/api/live` and `/api/quotes` on its own origin, plus `/api/tv_drawings` to keep a user's drawings. With a backend providing those routes, serve `web/` at `/static/` and `web/tv.html` at `/`. The standalone node exposes the public v1 routes; connecting this chart requires the [frontend adaptation described in the operator guide](docs/OPERATOR.md#point-a-chart-front-end-at-the-node).
 
 ## Status
 
