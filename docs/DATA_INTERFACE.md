@@ -40,6 +40,10 @@ GET /api/bars?venue=binance&symbol=XAUUSDT&tf=1h&bars=3&v=1
 - **`/api/live?…&v=1`**: first an `event: provenance` with the same object, then `event: bar` in the v1 bar shape.
 - Any other `v` → 400. No `v` is v0, kept as it was.
 
+## Optional paid bars
+
+`GET /paid/v1/bars` accepts the same parameters and returns the same v1 body after x402 v2 verification and settlement. Its challenge, receipt headers, signed operator manifest, local meter and per-payer UTC daily cap are described in [x402.md](../x402.md). The existing public test feed stays free.
+
 ## Not yet (planned, not built)
 
 | Gap | Why it matters | Lands with |
@@ -47,6 +51,6 @@ GET /api/bars?venue=binance&symbol=XAUUSDT&tf=1h&bars=3&v=1
 | No `validated` label | A closed segment is validated by matching hashes from two other nodes | Data nodes |
 | Only one node, and roots not yet anchored on the chain | Two nodes' anchors must agree for a day to be validated | Data nodes, after the chain's anchor message |
 | No portable workspace (layouts, watchlists, drawings belonging to the account) | A user keeps their setup when they change front end | Milestone 1 |
-| Usage not recorded | The meter: views per build, bytes per node, votes | Meter |
+| Local request records are available with paid configuration; meter anchoring and votes remain pending | See [paid bars and rec.v1 records](../x402.md) | Meter |
 
 Changes to this interface are versioned here and never break an earlier version without notice.

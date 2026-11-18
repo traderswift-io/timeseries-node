@@ -27,6 +27,7 @@ def load_config(path: Path, command: str = 'serve') -> dict:
     if command == 'verify':
         require_url(config, 'node_base_url', ('http', 'https'))
         return config
+    config['config_path'] = path
     require_strings(config, ('node_id', 'database', 'http_base_url', 'websocket_base_url', 'listen_host'))
     require_url(config, 'http_base_url', ('http', 'https'))
     require_url(config, 'websocket_base_url', ('ws', 'wss'))

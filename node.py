@@ -12,9 +12,12 @@ import public_feed
 import store
 import venue
 import verification
+import x402
+import x402_configuration
 
 
 async def run_node(config: dict, anchor: bool = False) -> None:
+    paid = x402_configuration.load_paid(config, config['config_path'])
     stopped = asyncio.Event()
     loop = asyncio.get_running_loop()
     for signum in (signal.SIGINT, signal.SIGTERM):
@@ -22,7 +25,10 @@ async def run_node(config: dict, anchor: bool = False) -> None:
     connection = store.open_store(config['database'])
     if anchor:
         anchoring.prepare_store(connection)
-    runner = web.AppRunner(public_feed.create_app(connection, config['node_id']), access_log=None)
+    app = public_feed.create_app(connection, config['node_id'])
+    if paid is not None:
+        x402.install(app, paid)
+    runner = web.AppRunner(app, access_log=None, max_field_size=16384)
     tasks = []
     websocket = None
     try:
@@ -72,8 +78,11 @@ def main() -> None:
             asyncio.run(verification.print_verification(config, arguments.day))
         else:
             asyncio.run(run_node(config, anchor=arguments.command == 'anchor'))
-    except Exception:
-        print('node command failed; check configuration and service availability', file=sys.stderr)
+    except Exception as error:
+        message = 'node command failed; check configuration and service availability'
+        if isinstance(error, ValueError) and str(error) == 'paid route startup refused: invalid or missing configuration':
+            message = str(error)
+        print(message, file=sys.stderr)
         raise SystemExit(1) from None
 
 
