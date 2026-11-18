@@ -155,8 +155,8 @@ without checking the chain outcome. Two distinct endorsed, unvetoed stores
 with the same hash establish agreement. See [ANCHOR.md](ANCHOR.md) for the
 `verify` command, its separate read-only config, and recovery semantics.
 
-UNVERIFIED: actual chain-client flags and unattended signing support, inclusion,
-and live chain integration. The node does not anchor meters or settle fee splits.
+UNVERIFIED: unattended signing on a live chain, inclusion, and live chain
+integration. The client flags were checked against the `traderswiftd` help text. The node does not anchor meters or settle fee splits.
 
 ## Enable paid bars and read the meter
 
