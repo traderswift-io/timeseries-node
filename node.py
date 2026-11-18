@@ -18,7 +18,13 @@ import x402
 import x402_configuration
 
 
+def server_failure_log(handler, *args, status=500, **kwargs):
+    print(f'node http server failure status={status}', file=sys.stderr)
+
+
 def server_error_response(handler, request, status=500, exc=None, message=None):
+    if status >= 500:
+        server_failure_log(handler, status=status)
     if request.writer.output_size > 0:
         raise ConnectionError('response already started')
     response = web.Response(status=status, body=b'')
@@ -41,6 +47,7 @@ async def run_node(config: dict, anchor: bool = False) -> None:
     server_logger = Logger('node.http')
     server_logger.disabled = True
     RequestHandler.handle_error = server_error_response
+    RequestHandler.log_exception = server_failure_log
     runner = web.AppRunner(app, access_log=None, logger=server_logger, max_field_size=16384)
     tasks = []
     websocket = None
