@@ -2,9 +2,11 @@ import argparse
 import asyncio
 import signal
 import sys
+from logging import Logger
 from pathlib import Path
 
 from aiohttp import ClientSession, ClientTimeout, web
+from aiohttp.web_protocol import RequestHandler
 
 import anchoring
 import configuration
@@ -14,6 +16,14 @@ import venue
 import verification
 import x402
 import x402_configuration
+
+
+def server_error_response(handler, request, status=500, exc=None, message=None):
+    if request.writer.output_size > 0:
+        raise ConnectionError('response already started')
+    response = web.Response(status=status, body=b'')
+    response.force_close()
+    return response
 
 
 async def run_node(config: dict, anchor: bool = False) -> None:
@@ -28,7 +38,10 @@ async def run_node(config: dict, anchor: bool = False) -> None:
     app = public_feed.create_app(connection, config['node_id'])
     if paid is not None:
         x402.install(app, paid)
-    runner = web.AppRunner(app, access_log=None, max_field_size=16384)
+    server_logger = Logger('node.http')
+    server_logger.disabled = True
+    RequestHandler.handle_error = server_error_response
+    runner = web.AppRunner(app, access_log=None, logger=server_logger, max_field_size=16384)
     tasks = []
     websocket = None
     try:
