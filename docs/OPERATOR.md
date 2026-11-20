@@ -1,5 +1,11 @@
 # Run a Time series node
 
+A Time series node keeps market candles on your own machine and serves them to anyone who asks, over plain HTTP. Running one is for operators; you do not need to run one to use the data.
+
+**Just want to see it? Start here:** read what a node answers in [the data interface](DATA_INTERFACE.md): the three public GET routes, with example requests and responses, need no install and no account. A public test feed on TraderSwift's own node is not open yet; until it is, the interface page is the no-install way to see the data. Everything below is for running your own node.
+
+**What you need to run one:** a Linux machine and Python 3.11 or newer. No private access, invitation or account is needed for a free node. A paid node needs your own Base payee address and a signed manifest, covered further down.
+
 A node stores venue candles in local SQLite and serves the versioned HTTP data
 interface. This process does both `store` and `serve` work. Charter v1 covers
 Hyperliquid `1h` candles for BNB, BTC, DOGE, ETH, HYPE, SOL and XRP. Each node
