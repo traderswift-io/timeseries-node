@@ -41,7 +41,7 @@ The chart calls `/api/instruments`, `/api/bars`, `/api/live` and `/api/quotes` o
 
 ## Status
 
-Time series is in dev mode. TraderSwift's node is live for its own use. A public test feed (Hyperliquid) and the daily segment hashes are in [docs/DATA_INTERFACE.md](docs/DATA_INTERFACE.md). Daily anchor submission and two-of-three verification are available through the [anchor and verify commands](docs/ANCHOR.md); actual chain-client integration still needs verification. Optional [paid bars and local usage records](x402.md) are available with a signed operator manifest; live facilitator integration remains unverified. Still to come: separate store and serve node software, meter anchoring and fee splitting, and a list of front ends with votes. Expect changes. The interface keeps every published version working.
+Time series is in dev mode. TraderSwift's node is live for its own use. The public test feed (Hyperliquid) is not open yet; its shape and the daily segment hashes are described in [docs/DATA_INTERFACE.md](docs/DATA_INTERFACE.md). Daily anchor submission and two-of-three verification are available through the [anchor and verify commands](docs/ANCHOR.md); actual chain-client integration still needs verification. Optional [paid bars and local usage records](x402.md) are available with a signed operator manifest; live facilitator integration remains unverified. Still to come: separate store and serve node software, meter anchoring and fee splitting, and a list of front ends with votes. Expect changes. The interface keeps every published version working.
 
 ## Licences of what is bundled
 
